@@ -10,17 +10,18 @@ import ComposableArchitecture
 
 @main
 struct TCADemo2App: App {
-    let store = Store(initialState: CounterFeature.State()) {
-        CounterFeature()
-     }
+    
+    let store = Store(initialState: DogBreedFeature.State()) {
+        DogBreedFeature()
+    }
     
     var body: some Scene {
         WindowGroup {
-          CounterView(
-            store: Store(initialState: CounterFeature.State()) {
-              CounterFeature()
-            }
-          )
+            DogBreedListView(
+                store: Store(initialState: DogBreedFeature.State()) {
+                    DogBreedFeature()
+                }
+            )
         }
     }
 }

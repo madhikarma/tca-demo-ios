@@ -9,6 +9,7 @@ import Foundation
 
 struct DogsAPI {
     
+    
     func fetchDogBreeds() async throws -> [DogBreed] {
         // TODO: (SM) dependency injection for mocking        
         let url = URL(string: "https://api.thecatapi.com/v1/breeds")!
