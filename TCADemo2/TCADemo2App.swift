@@ -5,16 +5,15 @@
 //  Created by Shagun Madhikarmi on 03/01/2025.
 //
 
-import SwiftUI
 import ComposableArchitecture
+import SwiftUI
 
 @main
 struct TCADemo2App: App {
-    
     let store = Store(initialState: DogBreedFeature.State()) {
         DogBreedFeature()
     }
-    
+
     var body: some Scene {
         WindowGroup {
             DogBreedListView(

@@ -15,7 +15,7 @@ struct DogBreedFeature {
         var response: Result<[DogBreed], Error>?
         // TODO: (SM) Dependency injection
         var dogsAPI = DogsAPI()
-        
+
         enum LoadingState {
             case notLoaded
             case loading
@@ -29,7 +29,7 @@ struct DogBreedFeature {
         case fetchData
         case fetchResponse(Result<[DogBreed], Error>)
     }
-    
+
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
@@ -43,10 +43,10 @@ struct DogBreedFeature {
                     print(dogBreeds.debugDescription)
                     await send(.fetchResponse(.success(dogBreeds)))
                 }
-            case .fetchResponse(.success(let data)):
+            case let .fetchResponse(.success(data)):
                 state.response = .success(data)
                 return .none
-            case .fetchResponse(.failure(let error)):
+            case let .fetchResponse(.failure(error)):
                 state.response = .failure(error)
                 //          state.errorMessage = error.rawValue
                 return .none

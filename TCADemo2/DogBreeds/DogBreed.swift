@@ -11,6 +11,4 @@ struct DogBreed: Decodable {
     let description: String
 }
 
-extension DogBreed: Hashable {
-    
-}
+extension DogBreed: Hashable {}
