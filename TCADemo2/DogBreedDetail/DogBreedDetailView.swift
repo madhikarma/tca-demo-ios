@@ -12,8 +12,12 @@ struct DogBreedDetailView: View {
     let store: StoreOf<DogBreedDetailFeature>
 
     var body: some View {
-        Form {}
-            .navigationTitle(Text(store.dogBreed.name))
+//        Form {
+//
+//        }
+//        .navigationTitle(Text(store.dogBreed.name))
+
+        Text(store.dogBreed.name)
     }
 }
 

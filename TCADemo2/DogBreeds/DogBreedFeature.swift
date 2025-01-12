@@ -20,13 +20,13 @@ struct DogBreedFeature {
         var response: Result<[DogBreed], Error>?
         // TODO: (SM) Dependency injection
         var dogsAPI = DogsAPI()
-        var path = StackState<DogBreedFeature.Path.State>()
+        var path = StackState<Path.State>()
     }
 
     enum Action {
         case fetchData
         case fetchResponse(Result<[DogBreed], Error>)
-        case path(StackActionOf<DogBreedFeature.Path>)
+        case path(StackActionOf<Path>)
     }
 
     @Dependency(\.uuid) var uuid

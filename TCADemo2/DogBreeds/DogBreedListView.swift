@@ -14,10 +14,6 @@ struct DogBreedListView: View {
     var body: some View {
         switch store.state.response {
         case let .success(breeds):
-
-            // TODO: (SM) Fix compiler error:
-            // 'Conflicting arguments to generic parameter 'Action' ('DogBreedFeature.Path.Action' vs. 'DogBreedFeature.Action')'"
-
             NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
                 List {
                     ForEach(breeds, id: \.self) { breed in
@@ -29,7 +25,10 @@ struct DogBreedListView: View {
                     }
                 }
             } destination: { store in
-                DogBreedListView(store: store)
+                switch store.case {
+                case let .detailItem(store):
+                    DogBreedDetailView(store: store)
+                }
             }
         case let .failure(error):
             Text("Error: \(error)")
