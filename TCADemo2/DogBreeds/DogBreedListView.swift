@@ -9,22 +9,27 @@ import ComposableArchitecture
 import SwiftUI
 
 struct DogBreedListView: View {
-    let store: StoreOf<DogBreedFeature>
+    @Bindable var store: StoreOf<DogBreedFeature>
 
     var body: some View {
         switch store.state.response {
         case let .success(breeds):
+
+            // TODO: (SM) Fix conflicting arguments passed to "NavigationStack(path: $store.scope(state: \.path, action: \.path"
+
+//            NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             List {
                 ForEach(breeds, id: \.self) { breed in
-                    Text(breed.name)
-                        .onTapGesture {
-                            // TODO: (SM) wrap in navigation to detail screen
-                            print(breed.name)
-                        }
+                    NavigationLink(
+                        state: DogBreedFeature.Path.State.detailItem(DogBreedDetailFeature.State(dogBreed: breed))
+                    ) {
+                        Text(breed.name)
+                    }
                 }
             }
-            .navigationTitle("Dog Breeds")
-
+//            } destination: { store in
+//                DogBreedListView(store: store)
+//            }
         case let .failure(error):
             Text("Error: \(error)")
         case .none:

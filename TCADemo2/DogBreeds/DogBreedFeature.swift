@@ -6,41 +6,37 @@
 //
 
 import ComposableArchitecture
+import SwiftUI
 
 @Reducer
 struct DogBreedFeature {
+    @Reducer
+    enum Path {
+        case detailItem(DogBreedDetailFeature)
+    }
+
     @ObservableState
     struct State {
-        var count = 0
         var response: Result<[DogBreed], Error>?
         // TODO: (SM) Dependency injection
         var dogsAPI = DogsAPI()
-
-        enum LoadingState {
-            case notLoaded
-            case loading
-            case loaded([DogBreed])
-            case failed(Error)
-        }
+        var path = StackState<DogBreedFeature.Path.State>()
     }
 
     enum Action {
-        case viewLoaded
         case fetchData
         case fetchResponse(Result<[DogBreed], Error>)
+        case path(StackActionOf<DogBreedFeature.Path>)
     }
 
+    @Dependency(\.uuid) var uuid
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .viewLoaded:
-                return .none
             case .fetchData:
-                // API / Network example taken from https://medium.com/@gangadharganga90/how-to-make-api-calls-in-swiftui-with-tca-framework-80f0980afa47
                 state.response = nil
                 return .run { [state = state] send in
                     let dogBreeds = try await state.dogsAPI.fetchDogBreeds()
-                    print(dogBreeds.debugDescription)
                     await send(.fetchResponse(.success(dogBreeds)))
                 }
             case let .fetchResponse(.success(data)):
@@ -48,9 +44,17 @@ struct DogBreedFeature {
                 return .none
             case let .fetchResponse(.failure(error)):
                 state.response = .failure(error)
-                //          state.errorMessage = error.rawValue
+                return .none
+            case .path:
+
+                // Note. if using a button isntead of NavigationLink then you need to handle it
+                //
+                // case .path(.element(id: _, action: .list(.detailButtonTapped))):
+                // state.path.append(.detailItem(DogBreedDetailFeature.State()))
+                //
                 return .none
             }
         }
+        .forEach(\.path, action: \.path)
     }
 }

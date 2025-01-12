@@ -12,3 +12,5 @@ struct DogBreed: Decodable {
 }
 
 extension DogBreed: Hashable {}
+
+extension DogBreed: Identifiable {}
